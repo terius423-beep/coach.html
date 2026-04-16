@@ -5,106 +5,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>씹어먹는 일본어 AI 코치</title>
     <style>
-        body { font-family: 'Pretendard', sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; }
-        .header { background-color: #ff6b6b; color: white; padding: 15px 20px; text-align: center; font-size: 1.2rem; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 10; }
-        .setup-box { padding: 15px; background: white; margin: 10px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .setup-box input { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 8px; margin-top: 5px; }
-        .chat-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-        .message { max-width: 85%; padding: 12px 16px; border-radius: 15px; line-height: 1.6; font-size: 0.95rem; word-wrap: break-word; }
-        .message.bot { background-color: white; color: #333; align-self: flex-start; border-bottom-left-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .message.user { background-color: #ff6b6b; color: white; align-self: flex-end; border-bottom-right-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .message a { color: #0066cc; font-weight: bold; text-decoration: none; display: inline-block; margin-top: 5px; background: #fdf2f2; padding: 5px 10px; border-radius: 8px; border: 1px solid #ffdada; font-size: 0.9rem; }
-        .typing-indicator { display: none; align-self: flex-start; background-color: white; padding: 12px 16px; border-radius: 15px; color: #888; font-size: 0.9rem; }
-        .input-container { display: flex; padding: 10px 15px; background-color: white; border-top: 1px solid #ddd; }
-        .input-container input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 25px; outline: none; }
-        .input-container button { background-color: #ff6b6b; color: white; border: none; padding: 0 20px; margin-left: 10px; border-radius: 25px; font-weight: bold; cursor: pointer; }
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; }
+        .header { background-color: #ff6b6b; color: white; padding: 15px 20px; text-align: center; font-size: 1.2rem; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .setup-box { padding: 15px; background: #fff; margin: 10px; border-radius: 12px; border: 1px solid #eee; }
+        .setup-box input { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
+        .chat-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; background: #fdfdfd; }
+        .message { max-width: 85%; padding: 14px; border-radius: 18px; line-height: 1.6; font-size: 0.95rem; }
+        .message.bot { background-color: white; color: #333; align-self: flex-start; border-bottom-left-radius: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .message.user { background-color: #ff6b6b; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .message a { color: #007bff; font-weight: bold; text-decoration: none; display: block; margin-top: 8px; padding: 8px; background: #f0f7ff; border-radius: 6px; text-align: center; border: 1px dashed #007bff; }
+        .loading { display: none; text-align: center; padding: 10px; color: #ff6b6b; font-weight: bold; font-size: 0.9rem; }
+        .input-area { display: flex; padding: 15px; background: white; border-top: 1px solid #eee; }
+        .input-area input { flex: 1; padding: 12px 18px; border: 1px solid #ddd; border-radius: 30px; outline: none; font-size: 1rem; }
+        .input-area button { background: #ff6b6b; color: white; border: none; padding: 0 25px; margin-left: 10px; border-radius: 30px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div class="header">🎓 씹어먹는 일본어 AI 코치</div>
+<div class="header">🎓 씹어먹는 일본어 AI 코치</div>
 
-    <div class="setup-box">
-        <label for="apiKey" style="font-size:0.8rem; color:#888; font-weight:bold;">🔑 관리자 설정: API 키를 입력하세요</label>
-        <input type="password" id="apiKey" placeholder="AIza...로 시작하는 키를 입력하세요">
-    </div>
+<div class="setup-box">
+    <input type="password" id="apiKey" placeholder="🔑 여기에 API 키(AIza...)를 입력하세요">
+</div>
 
-    <div class="chat-container" id="chatContainer">
-        <div class="message bot">
-            반갑습니다! <b>'이강준의 씹어먹는 일본어'</b> AI 수석 코치입니다. 😊<br>
-            일본어에 대해 궁금한 점을 물어보시면 친절한 설명과 강의를 추천해 드릴게요!
-        </div>
-    </div>
+<div class="chat-container" id="chat">
+    <div class="message bot">반갑습니다! '이강준의 씹어먹는 일본어' AI 수석 코치입니다. 😊 일본어에 대해 궁금한 점을 말씀해 주세요!</div>
+</div>
 
-    <div class="typing-indicator" id="loading">AI 코치가 답변을 작성 중입니다... 💡</div>
+<div class="loading" id="loader">AI 코치가 답변을 준비 중입니다... ✨</div>
 
-    <div class="input-container">
-        <input type="text" id="userInput" placeholder="궁금한 일본어 표현을 물어보세요!" onkeypress="if(event.key==='Enter') sendMessage()">
-        <button onclick="sendMessage()">전송</button>
-    </div>
+<div class="input-area">
+    <input type="text" id="userInput" placeholder="예: 수동태 예문 알려줘" onkeypress="if(event.key==='Enter') send()">
+    <button onclick="send()">전송</button>
+</div>
 
 <script>
-    function formatText(text) {
-        let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        formatted = formatted.replace(/\[(.*?)\]\((.*?)\)/g, '<br>🔗 <a href="$2" target="_blank">$1</a>'); 
-        return formatted.replace(/\n/g, '<br>');
+    function addMsg(text, type) {
+        const chat = document.getElementById('chat');
+        const div = document.createElement('div');
+        div.className = `message ${type}`;
+        // 마크다운 형태를 간단히 변환
+        let html = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        html = html.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">📺 $1</a>');
+        div.innerHTML = html.replace(/\n/g, '<br>');
+        chat.appendChild(div);
+        chat.scrollTop = chat.scrollHeight;
     }
 
-    function addMessage(text, sender) {
-        const chatContainer = document.getElementById('chatContainer');
-        const msgDiv = document.createElement('div');
-        msgDiv.className = `message ${sender}`;
-        msgDiv.innerHTML = formatText(text);
-        chatContainer.appendChild(msgDiv);
-        chatContainer.scrollTop = chatContainer.scrollHeight; 
-    }
+    async function send() {
+        const keyInput = document.getElementById('apiKey');
+        const userInput = document.getElementById('userInput');
+        const key = keyInput.value.trim();
+        const text = userInput.value.trim();
 
-    async function sendMessage() {
-        const apiKey = document.getElementById('apiKey').value.trim();
-        const inputField = document.getElementById('userInput');
-        const userText = inputField.value.trim();
+        if (!key || !text) return;
 
-        if (!apiKey) { alert("API 키를 입력해주세요!"); return; }
-        if (!userText) return;
+        addMsg(text, 'user');
+        userInput.value = '';
+        document.getElementById('loader').style.display = 'block';
 
-        addMessage(userText, 'user');
-        inputField.value = '';
-        document.getElementById('loading').style.display = 'block';
-
-        // 🚨 시도해볼 주소 목록 (순서대로 자동 시도)
+        // 🚨 [핵심!] 구글 정식 유저 전용 주소와 베타 주소를 모두 준비하여 자동으로 테스트합니다.
         const endpoints = [
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`,
-            `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey}`
+            `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${key}`,
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`
         ];
 
-        const prompt = `당신은 '이강준의 씹어먹는 일본어'의 수석 AI 코치입니다. 질문: "${userText}". 1.다정한 말투 2.예문2개 3.마지막에 반드시 아래 링크 포함: [📺 유튜브 강의](https://www.youtube.com/@kj-japanese), [📖 교재/전자책](https://master-japanese.com/books), [🏠 홈페이지](https://master-japanese.com/), [🔍 관련영상 검색](https://www.youtube.com/results?search_query=이강준의+씹어먹는+일본어+${encodeURIComponent(userText)})`;
+        const prompt = `당신은 '이강준의 씹어먹는 일본어' 수석 코치입니다. 질문: "${text}". 1.다정하게 대답 2.예문2개 3.마지막에 반드시 아래 링크 포함: [유튜브 강의](https://www.youtube.com/@kj-japanese), [교재/전자책](https://master-japanese.com/books), [홈페이지](https://master-japanese.com/), [관련영상 검색](https://www.youtube.com/results?search_query=이강준의+씹어먹는+일본어+${encodeURIComponent(text)})`;
 
         let success = false;
+        let lastError = "";
+
         for (let url of endpoints) {
             try {
-                const response = await fetch(url, {
+                const res = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
                 });
 
-                if (response.ok) {
-                    const data = await response.json();
+                if (res.ok) {
+                    const data = await res.json();
                     const aiText = data.candidates[0].content.parts[0].text;
-                    document.getElementById('loading').style.display = 'none';
-                    addMessage(aiText, 'bot');
+                    document.getElementById('loader').style.display = 'none';
+                    addMsg(aiText, 'bot');
                     success = true;
-                    break; // 성공 시 다음 루프 안 돌고 종료
+                    break;
+                } else {
+                    const err = await res.json();
+                    lastError = err.error.message;
                 }
-            } catch (e) {
-                console.log("시도 중 오류:", url);
-            }
+            } catch (e) { lastError = e.message; }
         }
 
         if (!success) {
-            document.getElementById('loading').style.display = 'none';
-            alert("🚨 구글 서버의 모든 경로가 차단되었습니다. API 키가 활성화되는 데 시간이 걸릴 수 있습니다. 5분 뒤에 다시 시도해 보세요!");
+            document.getElementById('loader').style.display = 'none';
+            alert("🚨 구글 서버 접속에 실패했습니다.\n사유: " + lastError + "\n\n1분 뒤에 다시 시도해주세요!");
         }
     }
 </script>
